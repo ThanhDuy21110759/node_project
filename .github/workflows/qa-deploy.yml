@@ -50,12 +50,15 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
 
+      - name: "Install sshpass"
+        run: sudo apt-get install sshpass
+
       - name: "SSH and Deploy to QA"
         env:
           DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         run: |
           echo "Deploying to QA..."
-          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -o BatchMode=yes -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
             set -e
             echo "Pulling the latest Docker image..."
             docker pull $DOCKER_IMAGE
