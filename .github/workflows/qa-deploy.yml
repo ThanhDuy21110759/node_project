@@ -3,7 +3,7 @@ name: "Build and deploy QA"
 on:
   push:
     branches:
-      - qa-deploy
+      - main
 
 jobs:
   build-images:
