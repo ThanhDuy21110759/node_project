@@ -50,23 +50,23 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
 
-      - name: "Install sshpass"
-        run: sudo apt-get install sshpass
-
       - name: "SSH and Deploy to QA"
         env:
           DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         run: |
-          echo "Deploying to QA..."
-          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -o BatchMode=yes -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
-            set -e
-            echo "Pulling the latest Docker image..."
-            docker pull $DOCKER_IMAGE
+          echo "config ssh with user, host and password"
+          ssh -o StrictHostKeyChecking=no -o BatchMode=yes -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
 
-            echo "Stopping and removing the existing container..."
-            docker stop nodejs-image-demo || true
-            docker rm nodejs-image-demo || true
+          # echo "Deploying to QA..."
+          # sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -o BatchMode=yes -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+          #   set -e
+          #   echo "Pulling the latest Docker image..."
+          #   docker pull $DOCKER_IMAGE
 
-            echo "Running the new container..."
-            docker run -d -p 80:8080 --name nodejs-image-demo --network host $DOCKER_IMAGE
-          EOF
+          #   echo "Stopping and removing the existing container..."
+          #   docker stop nodejs-image-demo || true
+          #   docker rm nodejs-image-demo || true
+
+          #   echo "Running the new container..."
+          #   docker run -d -p 80:8080 --name nodejs-image-demo --network host $DOCKER_IMAGE
+          # EOF
