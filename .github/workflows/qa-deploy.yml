@@ -1,0 +1,57 @@
+name: "Build and deploy QA"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-images:
+    name: "Build images Docker"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v2
+
+      - name: "Login to Docker Hub"
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: "Build Docker image with Dockerfile"
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa
+
+      - name: "Run tests"
+        run: |
+          echo "Running tests before pushing the image..."
+          docker run --rm ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa npm test
+
+      - name: "Push Docker image"
+        if: success()
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa
+
+  # deploy:
+  #   name: "Deploy to QA"
+  #   runs-on: ubuntu-latest
+
+  #   needs: build-images
+
+  #   steps:
+  #     - name: "Checkout code"
+  #       uses: actions/checkout@v2
+
+  #     - name: "Deploy to QA"
+  #       run: |
+  #         ssh -i ${{ secrets.SSH_KEY }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
+  #           docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa
+  #           docker stop nodejs-image-demo-qa || true
+  #           docker rm nodejs-image-demo-qa || true
+  #           docker run -d -p 80:8080 --name nodejs-image-demo-qa ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa
+  #         ENDSSH
