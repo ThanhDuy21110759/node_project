@@ -53,7 +53,7 @@ jobs:
       - name: "deploy"
         run: |
           echo "Deploying to QA..."
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -t -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
 
           echo "Pulling the image..."
           docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
