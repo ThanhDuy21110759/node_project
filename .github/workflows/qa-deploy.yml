@@ -26,16 +26,16 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          tags: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa
+          tags: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
 
       - name: "Run tests"
         run: |
           echo "Running tests before pushing the image..."
-          docker run --rm ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa npm test
+          docker run --rm ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest npm test
 
       - name: "Push Docker image"
         if: success()
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:qa
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
 
   # deploy:
   #   name: "Deploy to QA"
