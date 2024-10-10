@@ -55,7 +55,7 @@ jobs:
           DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         run: |
           echo "config ssh with user, host and password"
-          ssh -o StrictHostKeyChecking=no -o BatchMode=yes -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+          ssh -tt -o StrictHostKeyChecking=no -o BatchMode=yes -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
 
           # echo "Deploying to QA..."
           # sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -o BatchMode=yes -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
