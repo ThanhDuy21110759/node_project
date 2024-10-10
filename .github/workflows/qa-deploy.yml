@@ -55,7 +55,7 @@ jobs:
           user: ${{ secrets.SSH_USER }}
           pass: ${{ secrets.SSH_PASSWORD }}
           script: |
-            echo "Deploying to QA ..."
+            echo "Deploying to QA..."
             echo "Pulling the image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
 
