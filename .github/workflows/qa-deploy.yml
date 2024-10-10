@@ -50,13 +50,11 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
 
-      - name: "SSH and Deploy to QA"
+      - name: "SSH connection and Deploy to QA server"
         uses: appleboy/ssh-action@v1.1.0
-        env:
-          DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: whoami
