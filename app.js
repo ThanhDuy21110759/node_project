@@ -21,6 +21,6 @@ router.get("/sharks", function (req, res) {
 app.use(express.static(path));
 app.use("/", router);
 
-app.listen(port, function () {
-  console.log(`Server running at http://localhost:${port}/`);
+app.listen(port, "0.0.0.0", function () {
+  console.log(`Server running at http://0.0.0.0:${port}/`);
 });
