@@ -42,7 +42,7 @@ jobs:
           push: true
 
   deploy:
-    name: "Deploy to QA Environment"
+    name: "Deploy to server"
     runs-on: ubuntu-latest
     needs: build-and-test
 
@@ -71,10 +71,10 @@ jobs:
       #     # docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
       #     # docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
       #     # ENDSSH
-      - name: Test Network Connectivity
-        run: echo "Testing network connectivity to the QA server..." | ping -c 4 ${{ secrets.SSH_HOST }}
+      # - name: Test Network Connectivity
+      #   run: echo "Testing network connectivity to the QA server..." | ping -c 4 ${{ secrets.SSH_HOST }}
 
-      - name: SSH connection and deploy testtt
+      - name: Deploy
         # uses: appleboy/ssh-action@master
         # with:
         #   host: ${{ secrets.SSH_HOST }}
@@ -92,14 +92,10 @@ jobs:
         #     echo "Pulling the latest image from Docker Hub..."
         #     docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         #     docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
-        run:
-          echo "SSH connection" | ssh -T -o StrictHostKeyChecking=no -p 22 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-
-          docker stop nodejs-image-demo || true
+        run: docker stop nodejs-image-demo || true
           docker system prune -f
 
           docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
           docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
 
           docker logs -f nodejs-image-demo
-          ENDSSH
