@@ -50,16 +50,10 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
 
-      - name: Write SSH keys
-        run: |
-          echo "Writing SSH keys..."
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-
-          echo "add ssh key"
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-
-          echo "add known hosts"
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+      - name: Configure SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: "Deploy to QA server"
         run: |
