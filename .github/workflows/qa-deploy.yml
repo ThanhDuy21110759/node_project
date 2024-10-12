@@ -54,15 +54,22 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          sudo mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" | sudo tee ~/.ssh/id_rsa > /dev/null
-          # chmod 600 ~/.ssh/id_rsa
-          # ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          echo "Creating .ssh directory..."
+          mkdir -p ~/.ssh
+
+          echo "Writing SSH private key to id_rsa..."
+          echo "$SSH_PRIVATE_KEY" | tee ~/.ssh/id_rsa > /dev/null
+
+          echo "Setting permissions for id_rsa..."
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "Adding SSH host to known_hosts..."
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: "Deploy to QA server"
         run: |
           echo "Deploying the latest image to the QA server..."
-          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -v -o -t -vvvv StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
 
           echo "Deploying the latest image to the QA server..."
           docker stop nodejs-image-demo || true
