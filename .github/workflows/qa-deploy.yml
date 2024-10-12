@@ -50,16 +50,16 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
 
-      - name: Configure SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # - name: Configure SSH
+      #   uses: webfactory/ssh-agent@v0.9.0
+      #   with:
+      #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: "Deploy to QA server"
         run: |
           echo "Deploying the latest image to the QA server..."
           set -e
-          ssh -T -o StrictHostKeyChecking=no  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          sshpass -p 'Td@31012003' ssh -T -o StrictHostKeyChecking=no -p 22 ubuntu@192.168.109.158 <<'ENDSSH'
 
           echo "Deploying the latest image to the QA server..."
           docker stop nodejs-image-demo || true
