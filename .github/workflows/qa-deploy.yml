@@ -74,7 +74,7 @@ jobs:
       - name: Test Network Connectivity
         run: echo "Testing network connectivity to the QA server..." | ping -c 4 ${{ secrets.SSH_HOST }}
 
-      - name: SSH connection and deploy
+      - name: SSH connection and deploy test
         # uses: appleboy/ssh-action@master
         # with:
         #   host: ${{ secrets.SSH_HOST }}
