@@ -93,9 +93,11 @@ jobs:
         #     docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         #     docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         run: docker stop nodejs-image-demo || true
+
           docker system prune -f
 
           docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+
           docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
 
           docker logs -f nodejs-image-demo
