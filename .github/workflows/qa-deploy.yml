@@ -58,7 +58,7 @@ jobs:
       - name: "Deploy to QA server"
         run: |
           echo "Deploying the latest image to the QA server..."
-          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -o -tt StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
 
           echo "Deploying the latest image to the QA server..."
           docker stop nodejs-image-demo || true
