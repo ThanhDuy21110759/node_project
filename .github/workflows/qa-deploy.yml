@@ -72,10 +72,7 @@ jobs:
       #     # docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
       #     # ENDSSH
       - name: Test Network Connectivity
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-        run: echo $SSH_HOST
-          ping -c 4 $SSH_HOST
+        run: ping -c 4 ${{ secrets.SSH_HOST }}
 
       - name: SSH connection and deploy
         uses: appleboy/ssh-action@master
