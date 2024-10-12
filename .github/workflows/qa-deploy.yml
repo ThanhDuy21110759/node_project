@@ -80,6 +80,9 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
+            echo "ip github runner"
+            ifconfig
+
             echo "Deploying the latest image to the QA server..."
             docker stop nodejs-image-demo || true
             docker system prune -f
