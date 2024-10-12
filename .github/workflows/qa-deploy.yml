@@ -41,31 +41,31 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
           push: true
 
-  # deploy:
-  #   name: "Deploy to QA Environment"
-  #   runs-on: ubuntu-latest
-  #   needs: build-and-test
+  deploy:
+    name: "Deploy to QA Environment"
+    runs-on: ubuntu-latest
+    needs: build-and-test
 
-  #   steps:
-  #     - name: "Checkout code"
-  #       uses: actions/checkout@v2
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v2
 
-  #     - name: Configure SSH
-  #       uses: webfactory/ssh-agent@v0.9.0
-  #       with:
-  #         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Configure SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-  #     - name: "Deploy to QA server"
-  #       run: |
-  #         echo "Deploying the latest image to the QA server..."
-  #         rsync -avz -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/path/to/deploy
+      - name: "Deploy to QA server"
+        run: |
+          # echo "Deploying the latest image to the QA server..."
+          # rsync -avz -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/path/to/deploy
 
-  #         ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-  #         echo "Deploying the latest image to the QA server..."
-  #         docker stop nodejs-image-demo || true
-  #         docker system prune -f
+          ssh -T -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          echo "Deploying the latest image to the QA server..."
+          docker stop nodejs-image-demo || true
+          docker system prune -f
 
-  #         echo "Pulling the latest image from Docker Hub..."
-  #         docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
-  #         docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
-  #         ENDSSH
+          echo "Pulling the latest image from Docker Hub..."
+          docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+          docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+          ENDSSH
