@@ -57,11 +57,8 @@ jobs:
 
       - name: "Deploy to QA server"
         run: |
-          echo 'test ping to local'
-          ping 10.133.188.139 -c 4
-
-          echo "test ping to host"
-          ping 192.168.109.158 -c 4
+          echo "give ip"
+          ifconfig
 
           # echo "Deploying the latest image to the QA server..."          
           # ssh -T -o StrictHostKeyChecking=no -p 22 ubuntu@192.168.109.158 <<'ENDSSH'
