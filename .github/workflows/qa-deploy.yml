@@ -57,14 +57,20 @@ jobs:
 
       - name: "Deploy to QA server"
         run: |
-          echo "Deploying the latest image to the QA server..."          
-          ssh -T -o StrictHostKeyChecking=no -p 22 ubuntu@192.168.109.158 <<'ENDSSH'
+          echo 'test ping to local'
+          ping 10.133.188.139 -c 4
 
-          echo "Deploying the latest image to the QA server..."
-          docker stop nodejs-image-demo || true
-          docker system prune -f
+          echo "test ping to host"
+          ping 192.168.109.158 -c 4
 
-          echo "Pulling the latest image from Docker Hub..."
-          docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
-          docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
-          ENDSSH
+          # echo "Deploying the latest image to the QA server..."          
+          # ssh -T -o StrictHostKeyChecking=no -p 22 ubuntu@192.168.109.158 <<'ENDSSH'
+
+          # echo "Deploying the latest image to the QA server..."
+          # docker stop nodejs-image-demo || true
+          # docker system prune -f
+
+          # echo "Pulling the latest image from Docker Hub..."
+          # docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+          # docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+          # ENDSSH
