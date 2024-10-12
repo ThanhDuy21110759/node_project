@@ -57,8 +57,7 @@ jobs:
 
       - name: "Deploy to QA server"
         run: |
-          echo "Deploying the latest image to the QA server..."
-          set -e
+          echo "Deploying the latest image to the QA server..."          
           ssh -T -o StrictHostKeyChecking=no -p 22 ubuntu@192.168.109.158 <<'ENDSSH'
 
           echo "Deploying the latest image to the QA server..."
