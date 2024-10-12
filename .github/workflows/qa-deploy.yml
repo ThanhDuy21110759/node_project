@@ -76,20 +76,29 @@ jobs:
           ping -c 4 ${{ secrets.SSH_HOST }}
 
       - name: SSH connection and deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
-            echo "ip github runner"
-            ifconfig
+        # uses: appleboy/ssh-action@master
+        # with:
+        #   host: ${{ secrets.SSH_HOST }}
+        #   username: ${{ secrets.SSH_USER }}
+        #   password: ${{ secrets.SSH_PASSWORD }}
+        #   port: 22
+        #   script: |
+        #     echo "ip github runner"
+        #     ifconfig
 
-            echo "Deploying the latest image to the QA server..."
-            docker stop nodejs-image-demo || true
-            docker system prune -f
+        #     echo "Deploying the latest image to the QA server..."
+        #     docker stop nodejs-image-demo || true
+        #     docker system prune -f
 
-            echo "Pulling the latest image from Docker Hub..."
-            docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
-            docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+        #     echo "Pulling the latest image from Docker Hub..."
+        #     docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+        #     docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+        run: echo "Deploying the latest image to the QA server..."
+          ssh -T -o StrictHostKeyChecking=no -p 22 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          docker stop nodejs-image-demo || true
+          docker system prune -f
+
+          echo "Pulling the latest image from Docker Hub..."
+          docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+          docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+          ENDSSH
