@@ -58,8 +58,9 @@ jobs:
       - name: "Deploy to QA server"
         run: |
           echo "Deploying the latest image to the QA server..."
-          sshpass -p '${{ secrets.SSH_PASSWORD }}' ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/path/to/deploy
 
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
           echo "Deploying the latest image to the QA server..."
           docker stop nodejs-image-demo || true
           docker system prune -f
