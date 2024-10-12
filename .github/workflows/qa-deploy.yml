@@ -93,13 +93,17 @@ jobs:
         #     echo "Pulling the latest image from Docker Hub..."
         #     docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
         #     docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
-        run: echo "Deploying the latest image to the QA server..vvv"
+        run: echo "SSH connection"
           ssh -T -o StrictHostKeyChecking=no -p 22 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+
+          echo "Remove the existing container"
           docker stop nodejs-image-demo || true
           docker system prune -f
 
-          echo "Pulling the latest image from Docker Hub..."
+          echo "Pulling the latest image from Docker Hub and run the container"
           docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
           docker run -d -p 80:8080 --name nodejs-image-demo --network host ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
+
+          echo "Get the logs of the container"
           docker logs -f nodejs-image-demo
           ENDSSH
