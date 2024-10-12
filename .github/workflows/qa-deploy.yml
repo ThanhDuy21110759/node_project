@@ -64,7 +64,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           echo "Adding SSH host to known_hosts..."
-          ssh-keyscan -H -p ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H -p ${{ secrets.SSH_PORT}} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: "Deploy to QA server"
         run: |
