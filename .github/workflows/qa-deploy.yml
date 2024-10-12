@@ -55,9 +55,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Add EC2 host to known hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }}>> ~/.ssh/known_hosts
+
       - name: "Deploy to QA server"
         run: |
-          echo "give ip"
+          echo "ip github runner"
           ifconfig
 
           # echo "Deploying the latest image to the QA server..."          
