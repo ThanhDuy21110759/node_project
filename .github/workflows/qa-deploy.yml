@@ -59,6 +59,7 @@ jobs:
         run: |
           echo "Deploying the latest image to the QA server..."
           ssh -T -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+            echo "${{ secrets.SSH_USER }} ALL=(ALL) NOPASSWD: /usr/bin/docker" | sudo tee /etc/sudoers.d/${{ secrets.SSH_USER }}
             sudo docker stop nodejs-image-demo || true
             sudo docker system prune -f
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
