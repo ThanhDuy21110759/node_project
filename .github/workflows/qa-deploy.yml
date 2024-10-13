@@ -75,7 +75,8 @@ jobs:
       #   run: echo "Testing network connectivity to the QA server..." | ping -c 4 ${{ secrets.SSH_HOST }}
 
       - name: SSH re-connect to the server
-        run: ping -c 4 ${{ secrets.SSH_HOST }}
+        run:
+          #ping -c 4 ${{ secrets.SSH_HOST }}
 
           cd ~/.ssh && ls -la
 
