@@ -50,7 +50,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
 
-      - name: "Configure SSH connect with private key"
+      - name: "Configure SSH with private key"
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
