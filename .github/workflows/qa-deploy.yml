@@ -47,7 +47,7 @@ jobs:
     needs: build-and-test
 
     steps:
-      - name: "Checkout code"
+      - name: "Checkout code for deployment"
         uses: actions/checkout@v2
 
       - name: "Configure SSH connect with private key"
