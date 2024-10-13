@@ -75,10 +75,11 @@ jobs:
       #   run: echo "Testing network connectivity to the QA server..." | ping -c 4 ${{ secrets.SSH_HOST }}
 
       - name: SSH re-connect to the server
-        run:
-          #ping -c 4 ${{ secrets.SSH_HOST }}
+        run: mkdir -p ~/.ssh
 
-          cd ~/.ssh && ls -la
+          chmod 700 ~/.ssh
+
+          ls -la ~/.ssh
 
       - name: Deploy
         # uses: appleboy/ssh-action@master
