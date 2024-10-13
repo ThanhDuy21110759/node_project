@@ -58,8 +58,7 @@ jobs:
       - name: "Deploy to QA server"
         run: |
           echo "Deploying the latest image to the QA server..."
-          # ssh -T -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'            
-          ssh -T ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -T -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
             sudo docker stop nodejs-image-demo || true
             sudo docker system prune -f
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-image-demo:latest
